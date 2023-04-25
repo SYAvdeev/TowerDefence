@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bb6907f0fa820542916c58a517909eb, type: 3}
+  m_Name: MainConfig
+  m_EditorClassIdentifier: 
+  _gameplayConfig:
+    EnemiesMultiplierPerWave: 5
+    SpawnDelay: 1
+    SpawnY: -51
+    SpawnXMin: -25
+    SpawnXMax: 25
+    MapYSize: 100
+  _towerConfig:
+    MaxHealth: 100
+    AttackDelay: 0.7
+    AttackRange: 70
+    BulletSpeed: 140
+    LevelArmor:
+    - Price: 3
+      Value: 0.9
+    - Price: 6
+      Value: 0.7
+    - Price: 9
+      Value: 0.5
+    - Price: 12
+      Value: 0.3
+    - Price: 15
+      Value: 0.1
+    LevelDamage:
+    - Price: 3
+      Value: 3
+    - Price: 6
+      Value: 6
+    - Price: 9
+      Value: 9
+    - Price: 12
+      Value: 12
+    - Price: 15
+      Value: 15
+    ShootPositionX: 0
+    ShootPositionY: 45
+  _enemyConfig:
+    MoveSpeed: 8
+    AttackDelay: 1
+    AttackY: 25
+    LevelDamage:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    MaxHealth: 10
+  _distantEnemyConfig:
+    MoveSpeed: 10
+    AttackDelay: 1
+    AttackY: 0
+    LevelDamage:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    MaxHealth: 8
+    AttackRange: 20
+    BulletSpeed: 50
+  _enemyPrefab: {fileID: 4770340388947799143, guid: 685e4106beb65f347b1f8dab013129fe, type: 3}
+  _distantEnemyPrefab: {fileID: 852902300535139287, guid: 5d7a10d210424cc4a82ffa86b3553fba, type: 3}
