@@ -1,6 +1,7 @@
 using Domain.Entity.Config;
 using Domain.Gameplay;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Data.Config
 {
@@ -11,14 +12,14 @@ namespace Data.Config
         [SerializeField] private TowerConfig _towerConfig;
         [SerializeField] private EnemyConfig _enemyConfig;
         [SerializeField] private DistantEnemyConfig _distantEnemyConfig;
-        [SerializeField] private GameObject _enemyPrefab;
-        [SerializeField] private GameObject _distantEnemyPrefab;
+        [SerializeField] private AssetReference _enemyPrefab;
+        [SerializeField] private AssetReference _distantEnemyPrefab;
 
         public GameplayConfig GameplayConfig => _gameplayConfig;
         public TowerConfig TowerConfig => _towerConfig;
         public EnemyConfig EnemyConfig => _enemyConfig;
         public DistantEnemyConfig DistantEnemyConfig => _distantEnemyConfig;
-        public GameObject EnemyPrefab => _enemyPrefab;
-        public GameObject DistantEnemyPrefab => _distantEnemyPrefab;
+        public AssetReference EnemyPrefab => _enemyPrefab;
+        public AssetReference DistantEnemyPrefab => _distantEnemyPrefab;
     }
 }

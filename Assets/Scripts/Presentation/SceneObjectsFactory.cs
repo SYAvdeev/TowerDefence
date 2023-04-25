@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using Data.Config;
 using Domain.Entity;
 using Presentation.LevelObjects;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Presentation
 {
@@ -10,46 +13,61 @@ namespace Presentation
     {
         [SerializeField] private Transform _poolParent;
         [SerializeField] private MainConfig mainConfig;
-        [SerializeField] private GameObject _bulletPresenterPrefab;
+        [SerializeField] private AssetReference _bulletPresenterPrefab;
 
         private readonly Stack<EnemyPresenter> _meleeEnemiesPool = new();
         private readonly Stack<EnemyPresenter> _distantEnemiesPool = new();
         private readonly Stack<BulletPresenter> _bulletsPool = new();
 
-        public EnemyPresenter SpawnEnemy(Enemy enemy, Transform parent, float positionScale)
+        public void SpawnEnemy(Enemy enemy, Transform parent, float positionScale)
         {
             Stack<EnemyPresenter> pool = enemy.IsDistant ? _distantEnemiesPool : _meleeEnemiesPool;
-            GameObject enemyPrefab = enemy.IsDistant ? mainConfig.DistantEnemyPrefab : mainConfig.EnemyPrefab;
+            AssetReference enemyPrefab = enemy.IsDistant ? mainConfig.DistantEnemyPrefab : mainConfig.EnemyPrefab;
             
-            EnemyPresenter enemyPresenter = GetFromStack(pool, enemyPrefab, parent);
-            enemyPresenter.Initialize(positionScale);
-            enemyPresenter.SetObject(enemy);
-
-            return enemyPresenter;
+            GetFromStack(pool, enemyPrefab, parent, InitializePresenter);
+            
+            void InitializePresenter(EnemyPresenter presenter)
+            {
+                presenter.Initialize(positionScale);
+                presenter.SetObject(enemy);
+            }
         }
         
-        public BulletPresenter SpawnBullet(Transform parent, Vector2 startPosition, Vector2 endPosition, float bulletCooldown, float positionScale)
+        public void SpawnBullet(Transform parent, Vector2 startPosition, Vector2 endPosition, float bulletCooldown, float positionScale)
         {
-            BulletPresenter bulletPresenter = GetFromStack(_bulletsPool, _bulletPresenterPrefab, parent);  
-            bulletPresenter.Initialize(positionScale);
-            bulletPresenter.StartSimulation(bulletCooldown, startPosition, endPosition);
-            return bulletPresenter;
+            GetFromStack(_bulletsPool, _bulletPresenterPrefab, parent, InitializePresenter);
+
+            void InitializePresenter(BulletPresenter bulletPresenter)
+            {
+                bulletPresenter.Initialize(positionScale);
+                bulletPresenter.StartSimulation(bulletCooldown, startPosition, endPosition);
+            }
         }
 
-        private T GetFromStack<T>(Stack<T> pool, GameObject prefab, Transform parent) where T : MonoBehaviour, IPoolObject
+        private void GetFromStack<T>(Stack<T> pool, AssetReference prefab, Transform parent, Action<T> onLoaded) where T : MonoBehaviour, IPoolObject
         {
             if (!pool.TryPop(out T presenter))
             {
-                presenter = Instantiate(prefab, parent).GetComponent<T>();
-                presenter.AddToPool += AddToPool;
+                AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefab, parent);
+                handle.Completed += OnCompleted;
+
+                void OnCompleted(AsyncOperationHandle<GameObject> h)
+                {
+                    if (h.Status == AsyncOperationStatus.Succeeded)
+                    {
+                        presenter = h.Result.GetComponent<T>();
+                        presenter.AddToPool += AddToPool;
+                        presenter.gameObject.SetActive(true);
+                        onLoaded.Invoke(presenter);
+                    }
+                }
             }
             else
             {
                 presenter.transform.SetParent(parent);
+                presenter.gameObject.SetActive(true);
+                onLoaded.Invoke(presenter);
             }
-            
-            presenter.gameObject.SetActive(true);
-            return presenter;
         }
 
         private void AddToPool(EnemyPresenter enemyPresenter)

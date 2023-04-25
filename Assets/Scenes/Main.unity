@@ -555,7 +555,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _poolParent: {fileID: 290828200}
   mainConfig: {fileID: 11400000, guid: 207f604b41853d646ad8b82f7bf173a7, type: 2}
-  _bulletPresenterPrefab: {fileID: 179289657031672383, guid: 61a1198c5d683fd4ab017e08d9e621f7, type: 3}
+  _bulletPresenterPrefab:
+    m_AssetGUID: 61a1198c5d683fd4ab017e08d9e621f7
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!114 &498640260
 MonoBehaviour:
   m_ObjectHideFlags: 0

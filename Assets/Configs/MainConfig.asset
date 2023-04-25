@@ -72,5 +72,13 @@ MonoBehaviour:
     MaxHealth: 8
     AttackRange: 20
     BulletSpeed: 50
-  _enemyPrefab: {fileID: 4770340388947799143, guid: 685e4106beb65f347b1f8dab013129fe, type: 3}
-  _distantEnemyPrefab: {fileID: 852902300535139287, guid: 5d7a10d210424cc4a82ffa86b3553fba, type: 3}
+  _enemyPrefab:
+    m_AssetGUID: 685e4106beb65f347b1f8dab013129fe
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _distantEnemyPrefab:
+    m_AssetGUID: 5d7a10d210424cc4a82ffa86b3553fba
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
